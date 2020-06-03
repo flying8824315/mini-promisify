@@ -1,0 +1,19 @@
+{
+  "name": "mini-promisify",
+  "version": "0.0.1",
+  "description": "小程序 API promise 化支持，以及 storage 包装",
+  "main": "src/index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/flying8824315/mini-promisify.git"
+  },
+  "keywords": [
+    "miniprogram",
+    "api",
+    "promise",
+    "then",
+    "catch",
+    "finally",
+    "wechat"
+  ]
+}

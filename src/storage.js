@@ -8,13 +8,13 @@ export function miniStorageFactory(wx = {}) {
   return {
     getSync: wx.getStorageSync,
     setSync: wx.setStorageSync,
-    get(key, defaultValue) {
+    get(key, defaultValue, defaultForAbsentOnly = false) {
       const hasDefaultVal = arguments.length > 1
       return new Promise(((resolve, reject) => {
         wx.getStorage({
           key,
-          success(res) {
-            resolve(res.data)
+          success({data}) {
+            resolve(defaultForAbsentOnly ? data : (data == null ? defaultValue : data))
           },
           fail(err) {
             if (hasDefaultVal) {
@@ -54,8 +54,8 @@ export function webStorageFactory(storage = localStorage) {
       const value = JSON.parse(storage.getItem(key))
       return (value == null && arguments.length > 1) ? defaultValue : value
     },
-    set(key, data = null) {
-      storage.setItem(key, JSON.stringify(data))
+    set(key, data) {
+      storage.setItem(key, JSON.stringify(data || null))
     },
     remove(key) {
       storage.removeItem(key)

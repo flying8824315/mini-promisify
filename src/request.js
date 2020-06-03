@@ -20,15 +20,20 @@ function concatUrls(urls) {
 }
 
 export function requestFactory(options = {}, wx = platform) {
-  const {baseURL, method: defaultMethod, header, headers, ...opts} = options
+  const {
+    baseURL,
+    method: defaultMethod = 'GET',
+    header,
+    headers,
+    ...opts
+  } = options
   const headersAll = {...header, ...headers}
-
 
   function registry(url, method, config) {
 
   }
 
   return {
-
+    registry
   }
 }

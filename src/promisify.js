@@ -26,11 +26,15 @@ export const promisify = (api) => {
   }
 }
 
-export const promisifyAll = (methods = asyncMethods, wx = {}) => {
+export const promisifyAll = (methods = asyncMethods, wx = {}, extendAll = true) => {
   const promised = {};
-  methods.forEach(method => {
-    const fn = wx[method];
-    promised[method] = typeof fn === 'function' ? promisify(fn) : fn
-  });
+  Object.keys(wx).forEach(key => {
+    const fn = wx[key];
+    if (asyncMethods.indexOf(key) >= 0) {
+      promised[key] = typeof fn === 'function' ? promisify(fn) : fn
+    } else if (extendAll) {
+      promised[key] = fn
+    }
+  })
   return promised;
 }
