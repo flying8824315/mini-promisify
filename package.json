@@ -1,8 +1,16 @@
 {
   "name": "mini-promisify",
   "version": "0.0.1",
-  "description": "小程序 API promise 化支持，以及 storage 包装",
+  "description": "小程序 API promise 化支，以及 storage 包装",
   "main": "src/index.js",
+  "scripts": {
+    "console": "webpack console/index.js & node dist/main.js",
+    "build": "rollup -c"
+  },
+  "files": [
+    "src",
+    "lib"
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/flying8824315/mini-promisify.git"
@@ -14,6 +22,11 @@
     "then",
     "catch",
     "finally",
-    "wechat"
-  ]
+    "wechat",
+    "storage",
+    "request"
+  ],
+  "devDependencies": {
+    "rollup": "^2.13.0"
+  }
 }
