@@ -30,7 +30,7 @@ export const promisifyAll = (wx = {}, methods) => {
   const cachedMethods = {}, names = [...(methods || asyncMethods)];
   return new Proxy(cachedMethods, {
     get(target, p) {
-      let method = cachedMethods[p];
+      let method = target[p];
       if(!method) {
         method = wx[p];
         if(names.indexOf(p) >= 0 && typeof method === 'function') {
