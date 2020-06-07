@@ -1,8 +1,8 @@
 import {asyncMethods} from "./methods";
 
 // polyfill for finally
-if (!Promise.prototype.finally) {
-  Promise.prototype.finally = function (callback) {
+if(!Promise.prototype.finally) {
+  Promise.prototype.finally = function(callback) {
     let P = this.constructor
     return this.then(
       value => P.resolve(callback()).then(() => value),
@@ -26,15 +26,19 @@ export const promisify = (api) => {
   }
 }
 
-export const promisifyAll = (methods = asyncMethods, wx = {}, extendAll = true) => {
-  const promised = {};
-  Object.keys(wx).forEach(key => {
-    const fn = wx[key];
-    if (asyncMethods.indexOf(key) >= 0) {
-      promised[key] = typeof fn === 'function' ? promisify(fn) : fn
-    } else if (extendAll) {
-      promised[key] = fn
+export const promisifyAll = (wx = {}, methods) => {
+  const cachedMethods = {}, names = [...(methods || asyncMethods)];
+  return new Proxy(cachedMethods, {
+    get(target, p) {
+      let method = cachedMethods[p];
+      if(!method) {
+        method = wx[p];
+        if(names.indexOf(p) >= 0 && typeof method === 'function') {
+          method = promisify(method)
+        }
+        cachedMethods[p] = method;
+      }
+      return method;
     }
-  })
-  return promised;
+  });
 }
