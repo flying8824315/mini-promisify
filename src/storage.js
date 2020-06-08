@@ -35,6 +35,26 @@ export function miniStorageFactory(wx = {}) {
         })
       }))
     },
+    compute(key, handler, forceCache) {
+      const handled = (computed, resolve) => {
+        if (computed === false && !forceCache) {
+          wx.removeStorage({key, success: resolve})
+        } else {
+          wx.setStorage({key, data: computed, success: resolve});
+        }
+      }
+      return new Promise(resolve => {
+        wx.getStorage({
+          key,
+          success({data}){
+            handled(handler(data, null), resolve)
+          },
+          fail(err){
+            handled(handler(null, err), resolve)
+          }
+        })
+      })
+    },
     info: (sync) => sync ? wx.getStorageInfoSync() : getStorageInfo(),
     clear: (sync) => sync ? wx.clearStorageSync(key) : clearStorage(),
     remove: (key, sync) => {
